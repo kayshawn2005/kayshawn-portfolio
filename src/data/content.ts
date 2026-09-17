@@ -22,6 +22,9 @@ export const MARQUEE_ROW2 = [
   P('officer-1'),
   P('officer-5'),
   P('officer-4'),
+  P('sparks-1'),
+  P('sparks-2'),
+  P('sparks-3'),
   P('purple-2'),
   P('purple-3'),
 ]
@@ -74,10 +77,16 @@ export const THEMES: Theme[] = [
     images: [P('persaes-1'), P('persaes-2')],
   },
   {
-    slug: 'steel-and-winter-light',
-    title: 'Steel and Winter Light',
-    mood: 'A kneeling figure, fog, and cold morning light.',
-    images: [P('officer-1'), P('officer-5'), P('officer-4')],
+    slug: 'winter-light',
+    title: 'Winter Light',
+    mood: 'A quiet portrait in falling snow.',
+    images: [P('officer-1'), P('officer-5')],
+  },
+  {
+    slug: 'sparks-and-steel',
+    title: 'Sparks and Steel',
+    mood: 'A katana drawn in a shower of sparks.',
+    images: [P('sparks-1'), P('officer-4'), P('sparks-2'), P('sparks-3')],
   },
   {
     slug: 'porcelain-and-ribbon',
@@ -122,11 +131,11 @@ export const PROJECTS: FeaturedProject[] = [
   },
   {
     num: '03',
-    slug: 'steel-and-winter-light',
-    title: 'Steel and Winter Light',
-    mood: 'A kneeling figure, fog, and cold morning light.',
-    col1: [P('officer-1'), P('officer-5')],
-    col2: P('officer-4'),
+    slug: 'sparks-and-steel',
+    title: 'Sparks and Steel',
+    mood: 'A katana drawn in a shower of sparks.',
+    col1: [P('officer-4'), P('sparks-1')],
+    col2: P('sparks-3'),
   },
 ]
 
