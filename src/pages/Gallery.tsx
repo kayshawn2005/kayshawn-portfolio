@@ -1,14 +1,15 @@
-import { useEffect } from 'react'
-import { FadeIn, prefersReducedMotion } from '../components/FadeIn'
+import { FadeIn } from '../components/FadeIn'
 import { ContactButton } from '../components/Buttons'
 import { Pic } from '../components/Lightbox'
+import { SeriesParticles } from '../components/SeriesParticles'
 import { THEMES, type Theme } from '../data/content'
 
 const heroHeadingClass = 'bg-gradient-to-b from-[#646973] to-[#BBCCD7] bg-clip-text text-transparent'
 
 function ThemeSection({ theme }: { theme: Theme }) {
   return (
-    <section id={theme.slug} className="max-w-5xl mx-auto py-16 md:py-20 scroll-mt-24" style={{ borderTop: '1px solid rgba(215,226,234,0.12)' }}>
+    <section id={theme.slug} className="relative max-w-5xl mx-auto py-16 md:py-20 scroll-mt-24" style={{ borderTop: '1px solid rgba(215,226,234,0.12)' }}>
+      {theme.particles && <SeriesParticles kind={theme.particles} />}
       <FadeIn>
         <h2 className="text-[#D7E2EA] font-black uppercase leading-none" style={{ fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' }}>
           {theme.title}
@@ -18,7 +19,7 @@ function ThemeSection({ theme }: { theme: Theme }) {
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mt-8 md:mt-10">
         {theme.images.map((src, i) => (
           <FadeIn key={i} delay={i * 0.05}>
-            <Pic src={src} alt={theme.title} className="w-full object-cover rounded-2xl" style={{ aspectRatio: '4/5' }} />
+            <Pic src={src} alt={theme.title} sizes="(min-width: 1024px) 330px, (min-width: 640px) 33vw, 50vw" className="w-full object-cover rounded-2xl" style={{ aspectRatio: '4/5' }} />
           </FadeIn>
         ))}
       </div>
@@ -26,19 +27,8 @@ function ThemeSection({ theme }: { theme: Theme }) {
   )
 }
 
-export function GalleryPage({ slug }: { slug: string | null }) {
-  useEffect(() => {
-    if (slug) {
-      const t = setTimeout(() => {
-        const el = document.getElementById(slug)
-        if (el) el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })
-      }, 60)
-      return () => clearTimeout(t)
-    } else {
-      window.scrollTo(0, 0)
-    }
-  }, [slug])
-
+/** Scrolling to a series (#/gallery/<slug>) is handled by the router in App, inside the page transition. */
+export function GalleryPage() {
   return (
     <div style={{ overflowX: 'clip', background: '#0C0C0C' }}>
       <div className="px-5 sm:px-8 md:px-10 pt-28 md:pt-32">

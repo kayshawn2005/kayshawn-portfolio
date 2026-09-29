@@ -1,51 +1,39 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { FadeIn, prefersReducedMotion } from '../components/FadeIn'
+import { FadeIn } from '../components/FadeIn'
+import { clamp01, useScrollEffect } from '../lib/scroll'
 import { Magnet } from '../components/Magnet'
 import { AnimatedText } from '../components/AnimatedText'
 import { ContactButton, GhostButton } from '../components/Buttons'
 import { Pic } from '../components/Lightbox'
+import { HeroReel } from '../components/HeroReel'
 import { MARQUEE_ROW1, MARQUEE_ROW2, SERVICES, PROJECTS, KAYSHAWN_PORTRAIT, type FeaturedProject, type Service } from '../data/content'
 
 const heroHeadingClass = 'bg-gradient-to-b from-[#646973] to-[#BBCCD7] bg-clip-text text-transparent'
 
-/* ---------------- Hero ---------------- */
+/* ---------------- Hero: the reel, with the name over it ---------------- */
 function HeroSection() {
   return (
-    <section className="h-screen flex flex-col relative" style={{ overflowX: 'clip' }}>
-      <div className="flex-1 flex flex-col justify-center relative">
-        <FadeIn delay={0.15} y={40} className="overflow-hidden w-full">
-          <h1
-            className={`${heroHeadingClass} font-black uppercase tracking-tight leading-none whitespace-nowrap w-full mt-6 sm:mt-4 md:-mt-5 text-center`}
-            style={{ fontSize: 'clamp(3.5rem, 17vw, 15rem)' }}
-          >
-            hi, i&apos;m kayshawn
+    <section className="hero relative h-[100svh] min-h-[560px] flex flex-col" style={{ overflowX: 'clip' }}>
+      <HeroReel />
+      <div className="hero-scrim" aria-hidden="true" />
+      <div className="relative z-10 flex-1 flex flex-col justify-end">
+        <FadeIn delay={0.15} y={40} className="w-full px-4">
+          <h1 className="hero-name bg-gradient-to-b from-[#8A919B] to-[#DCE6EE] bg-clip-text text-transparent font-black uppercase tracking-tight text-center">
+            <span>hi, i&apos;m </span>
+            <span>kayshawn</span>
           </h1>
         </FadeIn>
-
-        <Magnet
-          padding={150}
-          strength={3}
-          className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px]"
-        >
-          <FadeIn delay={0.6} y={30}>
-            <Pic src={KAYSHAWN_PORTRAIT} alt="Kayshawn Yen, photographer" className="w-full rounded-3xl" eager />
+        <div className="flex justify-between items-end gap-4 sm:gap-6 pt-5 pb-7 sm:pb-8 md:pb-10 px-5 sm:px-6 md:px-10">
+          <FadeIn delay={0.35} y={20}>
+            <p className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[170px] sm:max-w-[220px] md:max-w-[260px]" style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}>
+              a photographer driven by capturing striking and unforgettable moments
+            </p>
           </FadeIn>
-        </Magnet>
-      </div>
-
-      <div className="flex justify-between items-end pb-7 sm:pb-8 md:pb-10 px-6 md:px-10 relative z-20">
-        <FadeIn delay={0.35} y={20}>
-          <p
-            className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[260px]"
-            style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
-          >
-            a photographer driven by capturing striking and unforgettable moments
-          </p>
-        </FadeIn>
-        <FadeIn delay={0.5} y={20}>
-          <ContactButton />
-        </FadeIn>
+          <FadeIn delay={0.5} y={20}>
+            <ContactButton />
+          </FadeIn>
+        </div>
       </div>
     </section>
   )
@@ -55,36 +43,22 @@ function HeroSection() {
 function MarqueeRow({ images, direction, sectionRef }: { images: string[]; direction: 'left' | 'right'; sectionRef: React.RefObject<HTMLElement | null> }) {
   const trackRef = useRef<HTMLDivElement | null>(null)
   const tripled = useMemo(() => [...images, ...images, ...images], [images])
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    let raf = 0
-    function update() {
-      const section = sectionRef.current
-      const track = trackRef.current
-      if (!section || !track) return
-      const sectionTop = section.getBoundingClientRect().top + window.scrollY
-      const offset = (window.scrollY - sectionTop + window.innerHeight) * 0.3
-      const x = direction === 'right' ? offset - 200 : -(offset - 200)
-      track.style.transform = `translateX(${x}px)`
-    }
-    function onScroll() {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        update()
-        raf = 0
-      })
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [direction, sectionRef])
+  // 0 as the section enters the viewport, 1 as it leaves; the rows drift 500px in opposite directions
+  const drift = useCallback(
+    (rect: DOMRect, vh: number) => {
+      const p = clamp01((vh - rect.top) / (rect.height + vh))
+      const x = direction === 'right' ? -200 + 500 * p : 200 - 500 * p
+      if (trackRef.current) trackRef.current.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`
+    },
+    [direction],
+  )
+  useScrollEffect(sectionRef, drift)
 
   return (
     <div className="overflow-hidden">
       <div ref={trackRef} className="flex gap-3" style={{ willChange: 'transform' }}>
         {tripled.map((src, i) => (
-          <Pic key={i} src={src} alt="" className="rounded-2xl object-cover flex-shrink-0" style={{ width: '420px', height: '270px' }} />
+          <Pic key={i} src={src} alt="" sizes="420px" className="rounded-2xl object-cover flex-shrink-0" style={{ width: '420px', height: '270px' }} />
         ))}
       </div>
     </div>
@@ -94,14 +68,14 @@ function MarqueeRow({ images, direction, sectionRef }: { images: string[]; direc
 function MarqueeSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   return (
-    <section ref={sectionRef} className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 flex flex-col gap-3">
+    <section ref={sectionRef} className="bg-[#0C0C0C] pt-16 sm:pt-24 md:pt-28 pb-10 flex flex-col gap-3">
       <MarqueeRow images={MARQUEE_ROW1} direction="right" sectionRef={sectionRef} />
       <MarqueeRow images={MARQUEE_ROW2} direction="left" sectionRef={sectionRef} />
     </section>
   )
 }
 
-/* ---------------- About teaser ---------------- */
+/* ---------------- About teaser: the portrait card over the heading ---------------- */
 function AboutTeaser() {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 md:px-10 py-20 relative">
@@ -110,6 +84,11 @@ function AboutTeaser() {
           About me
         </h2>
       </FadeIn>
+      <Magnet padding={150} strength={3} className="relative z-10 -mt-[5vw] sm:-mt-[4.5vw] lg:-mt-16 w-[200px] sm:w-[260px] md:w-[300px]">
+        <FadeIn delay={0.2} y={30}>
+          <Pic src={KAYSHAWN_PORTRAIT} alt="Kayshawn Yen, photographer" sizes="300px" className="w-full rounded-3xl" />
+        </FadeIn>
+      </Magnet>
 
       <div className="flex flex-col items-center gap-10 sm:gap-14 md:gap-16 mt-10 sm:mt-14 md:mt-16">
         <AnimatedText
@@ -169,36 +148,15 @@ function ProjectCard({ project, index, total }: { project: FeaturedProject; inde
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const cardRef = useRef<HTMLDivElement | null>(null)
   const targetScale = 1 - (total - 1 - index) * 0.03
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    let raf = 0
-    function update() {
-      const wrap = wrapRef.current
-      const card = cardRef.current
-      if (!wrap || !card) return
-      const rect = wrap.getBoundingClientRect()
-      const total = rect.height + window.innerHeight
-      const traveled = window.innerHeight - rect.top
-      const progress = Math.min(1, Math.max(0, traveled / total))
-      const scale = 1 - progress * (1 - targetScale)
-      card.style.transform = `scale(${scale})`
-    }
-    function onScroll() {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        update()
-        raf = 0
-      })
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [targetScale])
+  // cards shrink slightly as the next one stacks over them
+  const shrink = useCallback(
+    (rect: DOMRect, vh: number) => {
+      const p = clamp01((vh - rect.top) / (rect.height + vh))
+      if (cardRef.current) cardRef.current.style.transform = `scale(${(1 - p * (1 - targetScale)).toFixed(4)})`
+    },
+    [targetScale],
+  )
+  useScrollEffect(wrapRef, shrink)
 
   return (
     <div ref={wrapRef} className="h-[85vh]">
@@ -225,11 +183,11 @@ function ProjectCard({ project, index, total }: { project: FeaturedProject; inde
 
           <div className="flex gap-3 sm:gap-4">
             <div className="flex flex-col gap-3 sm:gap-4" style={{ width: '40%' }}>
-              <Pic src={project.col1[0]} alt="" className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" style={{ height: 'clamp(130px, 16vw, 230px)' }} />
-              <Pic src={project.col1[1]} alt="" className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" style={{ height: 'clamp(160px, 22vw, 340px)' }} />
+              <Pic src={project.col1[0]} alt="" sizes="(min-width: 1024px) 400px, 40vw" className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" style={{ height: 'clamp(130px, 16vw, 230px)' }} />
+              <Pic src={project.col1[1]} alt="" sizes="(min-width: 1024px) 400px, 40vw" className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" style={{ height: 'clamp(160px, 22vw, 340px)' }} />
             </div>
             <div style={{ width: '60%' }}>
-              <Pic src={project.col2} alt="" className="w-full h-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" />
+              <Pic src={project.col2} alt="" sizes="(min-width: 1024px) 600px, 60vw" className="w-full h-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" />
             </div>
           </div>
         </div>
@@ -242,7 +200,7 @@ function ProjectsSection() {
   return (
     <section id="projects" className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 relative z-10 px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-28 pb-24">
       <h2 className={`${heroHeadingClass} font-black uppercase text-center leading-none`} style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}>
-        Project
+        Projects
       </h2>
       <div className="max-w-5xl mx-auto mt-16">
         {PROJECTS.map((p, i) => (

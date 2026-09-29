@@ -1,3 +1,5 @@
+import type { ParticleKind } from '../components/SeriesParticles'
+
 const P = (name: string) => `/photos/${name}.jpg`
 
 export const MARQUEE_ROW1 = [
@@ -48,6 +50,8 @@ export interface Theme {
   title: string
   mood: string
   images: string[]
+  /** The series' own "weather", drawn lightly over its photos in the gallery. */
+  particles?: ParticleKind
 }
 
 /** Full body of work, grouped by mood/theme rather than subject name. */
@@ -57,18 +61,21 @@ export const THEMES: Theme[] = [
     title: 'Golden Hour Devotion',
     mood: 'Bridal editorial on the coast — warm light, quiet devotion.',
     images: [P('angelina-1'), P('angelina-2'), P('angelina-3')],
+    particles: 'dust',
   },
   {
     slug: 'quiet-garden-vows',
     title: 'Quiet Garden Vows',
     mood: 'A bride among roses, dappled afternoon light.',
     images: [P('bride-1'), P('bride-2'), P('bride-group')],
+    particles: 'petals',
   },
   {
     slug: 'cherry-blossom-reverie',
     title: 'Cherry Blossom Reverie',
     mood: 'Character portraiture under falling petals.',
     images: [P('fiori-1'), P('fiori-2'), P('fiori-3'), P('fiori-4')],
+    particles: 'sakura',
   },
   {
     slug: 'reaching-through-shadow',
@@ -81,12 +88,14 @@ export const THEMES: Theme[] = [
     title: 'Winter Light',
     mood: 'A quiet portrait in falling snow.',
     images: [P('officer-1'), P('officer-5')],
+    particles: 'snow',
   },
   {
     slug: 'sparks-and-steel',
     title: 'Sparks and Steel',
     mood: 'A katana drawn in a shower of sparks.',
     images: [P('sparks-1'), P('officer-4'), P('sparks-2'), P('sparks-3')],
+    particles: 'sparks',
   },
   {
     slug: 'porcelain-and-ribbon',
@@ -150,3 +159,33 @@ export const CONTACT = {
 }
 
 export const KAYSHAWN_PORTRAIT = P('kayshawn-portrait')
+
+export const themeOf = (src: string) => THEMES.find((t) => t.images.includes(src))
+
+/** Hero reel shots. `pos` is the focal point (object-position) so faces survive the crop. */
+export interface ReelShot {
+  src: string
+  pos?: string
+}
+/** Landscape viewports: widescreen frames, warm to cool, ending on eye contact before the loop. */
+export const REEL_WIDE: ReelShot[] = [
+  { src: P('angelina-3'), pos: '40% 35%' },
+  { src: P('bride-1'), pos: '32% 40%' },
+  { src: P('fiori-3'), pos: '55% 40%' },
+  { src: P('fiori-4'), pos: '50% 55%' },
+  { src: P('officer-1'), pos: '40% 45%' },
+  { src: P('sparks-2'), pos: '45% 50%' },
+  { src: P('sparks-3'), pos: '42% 50%' },
+  { src: P('angelina-1'), pos: '45% 30%' },
+]
+/** Portrait viewports (phones): native portrait frames, so every shot stays sharp instead of a centre crop. */
+export const REEL_TALL: ReelShot[] = [
+  { src: P('fiori-1'), pos: '50% 40%' },
+  { src: P('lolita-2'), pos: '50% 35%' },
+  { src: P('persaes-1'), pos: '50% 35%' },
+  { src: P('officer-5'), pos: '50% 30%' },
+  { src: P('sparks-1'), pos: '50% 45%' },
+  { src: P('purple-2'), pos: '50% 35%' },
+  { src: P('lolita-3'), pos: '50% 40%' },
+  { src: P('persaes-2'), pos: '50% 35%' },
+]

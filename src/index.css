@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
+@import "./motion.css" layer(components); /* layered so Tailwind utilities (e.g. sm:hidden) still win */
 
 * {
   box-sizing: border-box;

@@ -38,7 +38,8 @@ export function FadeIn({ children, delay = 0, duration = 0.7, x = 0, y = 30, as 
           }
         })
       },
-      { threshold: 0, rootMargin: '0px 0px -50px 0px' },
+      // no negative bottom margin: elements sitting in the bottom edge of the first screen (the hero CTA on phones) must still reveal
+      { threshold: 0, rootMargin: '0px' },
     )
     io.observe(el)
     return () => io.disconnect()
