@@ -2,35 +2,6 @@ import type { ParticleKind } from '../components/SeriesParticles'
 
 const P = (name: string) => `/photos/${name}.jpg`
 
-export const MARQUEE_ROW1 = [
-  P('angelina-1'),
-  P('angelina-2'),
-  P('angelina-3'),
-  P('bride-1'),
-  P('bride-2'),
-  P('bride-group'),
-  P('lolita-1'),
-  P('lolita-2'),
-  P('lolita-3'),
-  P('persaes-1'),
-  P('persaes-2'),
-]
-
-export const MARQUEE_ROW2 = [
-  P('fiori-1'),
-  P('fiori-2'),
-  P('fiori-3'),
-  P('fiori-4'),
-  P('officer-1'),
-  P('officer-5'),
-  P('officer-4'),
-  P('sparks-1'),
-  P('sparks-2'),
-  P('sparks-3'),
-  P('purple-2'),
-  P('purple-3'),
-]
-
 export interface Service {
   num: string
   name: string
@@ -52,12 +23,15 @@ export interface Theme {
   images: string[]
   /** The series' own "weather", drawn lightly over its photos in the gallery. */
   particles?: ParticleKind
+  /** Which of the fable's two worlds the series belongs to (Chapter II). */
+  world: 'country' | 'city'
 }
 
 /** Full body of work, grouped by mood/theme rather than subject name. */
 export const THEMES: Theme[] = [
   {
     slug: 'golden-hour-devotion',
+    world: 'country',
     title: 'Golden Hour Devotion',
     mood: 'Bridal editorial on the coast — warm light, quiet devotion.',
     images: [P('angelina-1'), P('angelina-2'), P('angelina-3')],
@@ -65,6 +39,7 @@ export const THEMES: Theme[] = [
   },
   {
     slug: 'quiet-garden-vows',
+    world: 'country',
     title: 'Quiet Garden Vows',
     mood: 'A bride among roses, dappled afternoon light.',
     images: [P('bride-1'), P('bride-2'), P('bride-group')],
@@ -72,6 +47,7 @@ export const THEMES: Theme[] = [
   },
   {
     slug: 'cherry-blossom-reverie',
+    world: 'city',
     title: 'Cherry Blossom Reverie',
     mood: 'Character portraiture under falling petals.',
     images: [P('fiori-1'), P('fiori-2'), P('fiori-3'), P('fiori-4')],
@@ -79,12 +55,14 @@ export const THEMES: Theme[] = [
   },
   {
     slug: 'reaching-through-shadow',
+    world: 'city',
     title: 'Reaching Through Shadow',
     mood: 'Dramatic light and a single reaching hand.',
     images: [P('persaes-1'), P('persaes-2')],
   },
   {
     slug: 'winter-light',
+    world: 'city',
     title: 'Winter Light',
     mood: 'A quiet portrait in falling snow.',
     images: [P('officer-1'), P('officer-5')],
@@ -92,6 +70,7 @@ export const THEMES: Theme[] = [
   },
   {
     slug: 'sparks-and-steel',
+    world: 'city',
     title: 'Sparks and Steel',
     mood: 'A katana drawn in a shower of sparks.',
     images: [P('sparks-1'), P('officer-4'), P('sparks-2'), P('sparks-3')],
@@ -99,52 +78,17 @@ export const THEMES: Theme[] = [
   },
   {
     slug: 'porcelain-and-ribbon',
+    world: 'city',
     title: 'Porcelain and Ribbon',
     mood: 'Soft pastels and doll-like stillness.',
     images: [P('lolita-1'), P('lolita-2'), P('lolita-3')],
   },
   {
     slug: 'midnight-velvet',
+    world: 'city',
     title: 'Midnight Velvet',
     mood: 'Candid convention energy in black and red.',
     images: [P('purple-2'), P('purple-3')],
-  },
-]
-
-export interface FeaturedProject {
-  num: string
-  slug: string
-  title: string
-  mood: string
-  col1: [string, string]
-  col2: string
-}
-
-/** 3 featured series on the home page — themed, not named. */
-export const PROJECTS: FeaturedProject[] = [
-  {
-    num: '01',
-    slug: 'golden-hour-devotion',
-    title: 'Golden Hour Devotion',
-    mood: 'Bridal editorial, coastline, golden hour.',
-    col1: [P('angelina-1'), P('angelina-2')],
-    col2: P('angelina-3'),
-  },
-  {
-    num: '02',
-    slug: 'cherry-blossom-reverie',
-    title: 'Cherry Blossom Reverie',
-    mood: 'Character portraiture under falling petals.',
-    col1: [P('fiori-1'), P('fiori-3')],
-    col2: P('fiori-4'),
-  },
-  {
-    num: '03',
-    slug: 'sparks-and-steel',
-    title: 'Sparks and Steel',
-    mood: 'A katana drawn in a shower of sparks.',
-    col1: [P('officer-4'), P('sparks-1')],
-    col2: P('sparks-3'),
   },
 ]
 
@@ -159,33 +103,3 @@ export const CONTACT = {
 }
 
 export const KAYSHAWN_PORTRAIT = P('kayshawn-portrait')
-
-export const themeOf = (src: string) => THEMES.find((t) => t.images.includes(src))
-
-/** Hero reel shots. `pos` is the focal point (object-position) so faces survive the crop. */
-export interface ReelShot {
-  src: string
-  pos?: string
-}
-/** Landscape viewports: widescreen frames, warm to cool, ending on eye contact before the loop. */
-export const REEL_WIDE: ReelShot[] = [
-  { src: P('angelina-3'), pos: '40% 35%' },
-  { src: P('bride-1'), pos: '32% 40%' },
-  { src: P('fiori-3'), pos: '55% 40%' },
-  { src: P('fiori-4'), pos: '50% 55%' },
-  { src: P('officer-1'), pos: '40% 45%' },
-  { src: P('sparks-2'), pos: '45% 50%' },
-  { src: P('sparks-3'), pos: '42% 50%' },
-  { src: P('angelina-1'), pos: '45% 30%' },
-]
-/** Portrait viewports (phones): native portrait frames, so every shot stays sharp instead of a centre crop. */
-export const REEL_TALL: ReelShot[] = [
-  { src: P('fiori-1'), pos: '50% 40%' },
-  { src: P('lolita-2'), pos: '50% 35%' },
-  { src: P('persaes-1'), pos: '50% 35%' },
-  { src: P('officer-5'), pos: '50% 30%' },
-  { src: P('sparks-1'), pos: '50% 45%' },
-  { src: P('purple-2'), pos: '50% 35%' },
-  { src: P('lolita-3'), pos: '50% 40%' },
-  { src: P('persaes-2'), pos: '50% 35%' },
-]

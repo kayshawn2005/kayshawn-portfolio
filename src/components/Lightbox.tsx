@@ -3,6 +3,7 @@ import { flushSync } from 'react-dom'
 import { X } from 'lucide-react'
 import { Picture } from './Picture'
 import { largestSrc } from '../lib/photos'
+import { lockScroll } from '../lib/scrollLock'
 import { withViewTransition } from '../lib/viewTransition'
 
 type OpenFn = (src: string, alt?: string, from?: HTMLElement | null) => void
@@ -56,9 +57,7 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [close])
 
-  useEffect(() => {
-    document.documentElement.style.overflow = item ? 'hidden' : ''
-  }, [item])
+  useEffect(() => (item ? lockScroll() : undefined), [item])
 
   return (
     <LightboxCtx.Provider value={open}>

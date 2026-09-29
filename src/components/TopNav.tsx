@@ -1,53 +1,55 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { SoundToggle } from './SoundToggle'
+import { lockScroll } from '../lib/scrollLock'
+import { CHAPTERS } from '../data/story'
 
-const LINKS = [
+const PAGES = [
+  { href: '#/', label: 'Story' },
+  { href: '#/gallery', label: 'Album' },
   { href: '#/about', label: 'About' },
-  { href: '#/gallery', label: 'Gallery' },
-  { href: '#projects', label: 'Projects' },
   { href: '#/contact', label: 'Contact' },
 ]
 
-/** Fixed top nav — persists across every page. On phones the links fold into a full-screen menu. */
+/** Fixed top bar on every page. The menu is an index of the night: six scenes with their times, then the pages. */
 export function TopNav() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (!open) return
+    const unlock = lockScroll()
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
     const onHash = () => setOpen(false)
     window.addEventListener('keydown', onKey)
     window.addEventListener('hashchange', onHash)
-    document.documentElement.style.overflow = 'hidden'
     return () => {
+      unlock()
       window.removeEventListener('keydown', onKey)
       window.removeEventListener('hashchange', onHash)
-      document.documentElement.style.overflow = ''
     }
   }, [open])
 
   return (
     <>
-      <header className="site-nav fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0C0C0C]/80 border-b border-white/10">
-        <div className="flex justify-between items-center gap-4 px-5 md:px-10 py-4 md:py-5 max-w-6xl mx-auto">
-          <a href="#/" className="text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-base whitespace-nowrap hover:opacity-70 transition-opacity duration-200">
+      <header className="site-nav">
+        <div className="site-nav-inner">
+          <a href="#/" className="wordmark">
             Kayshawn Yen
           </a>
-          <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
-            <nav className="hidden sm:flex gap-6 md:gap-8" aria-label="Main">
-              {LINKS.map((l) => (
-                <a key={l.href} href={l.href} className="text-[#D7E2EA] font-medium uppercase tracking-wider text-xs sm:text-sm hover:opacity-70 transition-opacity duration-200">
-                  {l.label}
+          <div className="site-nav-right">
+            <nav className="hidden md:flex items-center gap-7" aria-label="Pages">
+              {PAGES.map((p) => (
+                <a key={p.href} href={p.href} className="site-nav-link">
+                  {p.label}
                 </a>
               ))}
             </nav>
             <SoundToggle />
             <button
               type="button"
-              className="sm:hidden menu-button"
+              className="menu-button"
               aria-expanded={open}
-              aria-controls="mobile-menu"
+              aria-controls="story-menu"
               aria-label={open ? 'Close menu' : 'Open menu'}
               onClick={() => setOpen((o) => !o)}
             >
@@ -59,13 +61,32 @@ export function TopNav() {
       </header>
       {open &&
         createPortal(
-          <nav id="mobile-menu" className="mobile-menu" aria-label="Main">
-            {LINKS.map((l, i) => (
-              <a key={l.href} href={l.href} style={{ animationDelay: `${0.05 + i * 0.06}s` }} onClick={() => setOpen(false)}>
-                {l.label}
-              </a>
-            ))}
-          </nav>,
+          <div id="story-menu" className="story-menu" role="dialog" aria-modal="true" aria-label="Menu">
+            <nav className="story-menu-scenes" aria-label="Chapters">
+              <p className="story-eyebrow">The night, in six scenes</p>
+              <ol>
+                {CHAPTERS.map((c, i) => (
+                  <li key={c.id} style={{ animationDelay: `${0.04 + i * 0.05}s` }}>
+                    <a href={`#${c.id}`}>
+                      <span className="story-menu-time">{c.time}</span>
+                      <span className="story-menu-num">{c.numeral}</span>
+                      <span className="story-menu-title">{c.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+            <nav className="story-menu-pages" aria-label="Pages">
+              <p className="story-eyebrow">Pages</p>
+              <ul>
+                {PAGES.map((p) => (
+                  <li key={p.href}>
+                    <a href={p.href}>{p.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>,
           document.body,
         )}
     </>

@@ -18,7 +18,7 @@ const schedule = () => {
 }
 let listening = false
 
-function onScrollFrame(job: Job) {
+export function onScrollFrame(job: Job) {
   if (!listening) {
     listening = true
     window.addEventListener('scroll', schedule, { passive: true })
