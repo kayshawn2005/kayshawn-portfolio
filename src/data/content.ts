@@ -23,7 +23,7 @@ export interface Theme {
   images: string[]
   /** The series' own "weather", drawn lightly over its photos in the gallery. */
   particles?: ParticleKind
-  /** Which of the fable's two worlds the series belongs to (Chapter II). */
+  /** Which of the fable's two worlds the series belongs to (the album groups by it). */
   world: 'country' | 'city'
 }
 

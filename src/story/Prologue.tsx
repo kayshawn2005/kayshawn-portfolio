@@ -71,7 +71,7 @@ export function Prologue() {
       <div className="prologue-street" aria-hidden="true" />
       <div className="prologue-content">
         <div className="prologue-head">
-          <p className="story-eyebrow">Slow Summer Eve · a photography portfolio in six scenes</p>
+          <p className="story-eyebrow">Slow Summer Eve · a photography portfolio in five scenes</p>
           <h1 className="prologue-title">Kayshawn Yen</h1>
         </div>
         <div className="prologue-booth-wrap">

@@ -11,7 +11,7 @@ const PAGES = [
   { href: '#/contact', label: 'Contact' },
 ]
 
-/** Fixed top bar on every page. The menu is an index of the night: six scenes with their times, then the pages. */
+/** Fixed top bar on every page. The menu is an index of the night: five scenes with their times, then the pages. */
 export function TopNav() {
   const [open, setOpen] = useState(false)
 
@@ -63,7 +63,7 @@ export function TopNav() {
         createPortal(
           <div id="story-menu" className="story-menu" role="dialog" aria-modal="true" aria-label="Menu">
             <nav className="story-menu-scenes" aria-label="Chapters">
-              <p className="story-eyebrow">The night, in six scenes</p>
+              <p className="story-eyebrow">The night, in five scenes</p>
               <ol>
                 {CHAPTERS.map((c, i) => (
                   <li key={c.id} style={{ animationDelay: `${0.04 + i * 0.05}s` }}>

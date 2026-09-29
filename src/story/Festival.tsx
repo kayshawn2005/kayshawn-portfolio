@@ -64,7 +64,7 @@ function ContactCard() {
 }
 
 /**
- * Chapter IV: a summer festival. Shells go up on every other beat of the music (or every ~2 s without it);
+ * Chapter III: a summer festival. Shells go up on every other beat of the music (or every ~2 s without it);
  * tapping the sky launches one where you tapped. Pulling the pin ends in flowers — and the contact card.
  * Fireworks burst behind the words; the petals get their own canvas in front, so they drift over the card too.
  */

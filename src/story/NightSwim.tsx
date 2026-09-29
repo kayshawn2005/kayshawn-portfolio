@@ -20,7 +20,7 @@ const NARROW_LAYOUT = [
 ]
 
 /**
- * Chapter III: the featured series float on a night pool. The water is WebGL (ripples follow the pointer,
+ * Chapter II: the featured series float on a night pool. The water is WebGL (ripples follow the pointer,
  * and a drop falls on every other beat while the music plays); each float is also a real link laid over the
  * canvas, so keyboards and screen readers get the same way in. Without WebGL2 the photos simply float.
  */

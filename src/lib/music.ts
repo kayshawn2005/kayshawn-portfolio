@@ -6,7 +6,6 @@
  */
 export const BPM = 130
 export const BEAT = 60 / BPM
-export const BAR = BEAT * 4
 export const DOWNBEAT = 0.608
 export const TRACK = { title: 'slow summer eve', artist: 'Kensuke Ushio' }
 
