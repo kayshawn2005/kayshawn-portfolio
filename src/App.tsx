@@ -7,6 +7,7 @@ import { AboutPage } from './pages/About'
 import { GalleryPage } from './pages/Gallery'
 import { ContactPage } from './pages/Contact'
 import { useMusicAutostart } from './lib/useMusicAutostart'
+import { EntryScreen } from './components/EntryScreen'
 
 type Route = { view: 'home'; anchor: string | null } | { view: 'gallery'; slug: string | null } | { view: 'about' } | { view: 'contact' }
 
@@ -57,6 +58,7 @@ function App() {
       {route.view === 'about' && <AboutPage />}
       {route.view === 'contact' && <ContactPage />}
       {route.view === 'home' && <HomePage />}
+      <EntryScreen />
     </LightboxProvider>
   )
 }
