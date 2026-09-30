@@ -6,6 +6,7 @@ import { HomePage } from './pages/Home'
 import { AboutPage } from './pages/About'
 import { GalleryPage } from './pages/Gallery'
 import { ContactPage } from './pages/Contact'
+import { useMusicAutostart } from './lib/useMusicAutostart'
 
 type Route = { view: 'home'; anchor: string | null } | { view: 'gallery'; slug: string | null } | { view: 'about' } | { view: 'contact' }
 
@@ -21,6 +22,7 @@ function parseHash(hash: string): Route {
 
 function App() {
   const [hash, setHash] = useState(() => window.location.hash)
+  useMusicAutostart()
 
   useEffect(() => {
     const onHashChange = () => setHash(window.location.hash)

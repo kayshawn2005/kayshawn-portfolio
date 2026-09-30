@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { FadeIn, prefersReducedMotion } from '../components/FadeIn'
 import { ContactButton } from '../components/Buttons'
-import { Pic } from '../components/Lightbox'
+import { JustifiedGrid } from '../components/JustifiedGrid'
 import { THEMES, type Theme } from '../data/content'
 
 const heroHeadingClass = 'bg-gradient-to-b from-[#646973] to-[#BBCCD7] bg-clip-text text-transparent'
@@ -15,12 +15,9 @@ function ThemeSection({ theme }: { theme: Theme }) {
         </h2>
         <p className="text-[#D7E2EA]/50 mt-3 text-sm md:text-base max-w-md">{theme.mood}</p>
       </FadeIn>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mt-8 md:mt-10">
-        {theme.images.map((src, i) => (
-          <FadeIn key={i} delay={i * 0.05}>
-            <Pic src={src} alt={theme.title} className="w-full object-cover rounded-2xl" style={{ aspectRatio: '4/5' }} />
-          </FadeIn>
-        ))}
+      {/* every photo at its own proportions, in rows that fill the width */}
+      <div className="mt-8 md:mt-10">
+        <JustifiedGrid images={theme.images} alt={theme.title} />
       </div>
     </section>
   )

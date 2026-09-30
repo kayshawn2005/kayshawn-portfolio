@@ -6,6 +6,8 @@ import { AnimatedText } from '../components/AnimatedText'
 import { ContactButton, GhostButton } from '../components/Buttons'
 import { Pic } from '../components/Lightbox'
 import { MARQUEE_ROW1, MARQUEE_ROW2, SERVICES, PROJECTS, KAYSHAWN_PORTRAIT, type FeaturedProject, type Service } from '../data/content'
+import { ratioOf } from '../lib/photos'
+import { JustifiedGrid } from '../components/JustifiedGrid'
 
 const heroHeadingClass = 'bg-gradient-to-b from-[#646973] to-[#BBCCD7] bg-clip-text text-transparent'
 
@@ -84,7 +86,7 @@ function MarqueeRow({ images, direction, sectionRef }: { images: string[]; direc
     <div className="overflow-hidden">
       <div ref={trackRef} className="flex gap-3" style={{ willChange: 'transform' }}>
         {tripled.map((src, i) => (
-          <Pic key={i} src={src} alt="" className="rounded-2xl object-cover flex-shrink-0" style={{ width: '420px', height: '270px' }} />
+          <Pic key={i} src={src} alt="" className="rounded-2xl object-cover flex-shrink-0" style={{ width: `${Math.round(270 * ratioOf(src))}px`, height: '270px' }} />
         ))}
       </div>
     </div>
@@ -223,15 +225,13 @@ function ProjectCard({ project, index, total }: { project: FeaturedProject; inde
             <GhostButton label="View Series" href={`#/gallery/${project.slug}`} />
           </div>
 
-          <div className="flex gap-3 sm:gap-4">
-            <div className="flex flex-col gap-3 sm:gap-4" style={{ width: '40%' }}>
-              <Pic src={project.col1[0]} alt="" className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" style={{ height: 'clamp(130px, 16vw, 230px)' }} />
-              <Pic src={project.col1[1]} alt="" className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" style={{ height: 'clamp(160px, 22vw, 340px)' }} />
-            </div>
-            <div style={{ width: '60%' }}>
-              <Pic src={project.col2} alt="" className="w-full h-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]" />
-            </div>
-          </div>
+          {/* the three photos at their own proportions: one row on wide screens, larger rows on phones */}
+          <JustifiedGrid
+            images={[project.col1[0], project.col1[1], project.col2]}
+            alt={project.title}
+            targetFor={(w) => (w < 640 ? 150 : w * 0.2)}
+            photoClass="rounded-[20px] sm:rounded-[28px] md:rounded-[36px]"
+          />
         </div>
       </div>
     </div>

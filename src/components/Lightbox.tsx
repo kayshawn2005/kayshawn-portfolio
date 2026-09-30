@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { X } from 'lucide-react'
+import { sizeOf } from '../lib/photos'
 
 type OpenFn = (src: string, alt?: string) => void
 
@@ -69,10 +70,13 @@ interface PicProps {
 /** An <img> that opens the shared Lightbox on click, for full-size zoom viewing. */
 export function Pic({ src, alt = '', className = '', style = {}, eager = false }: PicProps) {
   const open = useContext(LightboxCtx)
+  const size = sizeOf(src)
   return (
     <img
       src={src}
       alt={alt}
+      width={size?.[0]}
+      height={size?.[1]}
       loading={eager ? undefined : 'lazy'}
       onClick={(e) => {
         e.stopPropagation()

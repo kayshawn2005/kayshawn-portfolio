@@ -1,3 +1,5 @@
+import { SoundToggle } from './SoundToggle'
+
 /** Fixed top nav — persists across every page and stays visible while scrolling. */
 export function TopNav() {
   return (
@@ -6,7 +8,7 @@ export function TopNav() {
         <a href="#/" className="text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-base hover:opacity-70 transition-opacity duration-200">
           Kayshawn Yen
         </a>
-        <nav className="flex gap-4 sm:gap-6 md:gap-8">
+        <nav className="flex items-center gap-4 sm:gap-6 md:gap-8">
           <a href="#/about" className="text-[#D7E2EA] font-medium uppercase tracking-wider text-xs sm:text-sm hover:opacity-70 transition-opacity duration-200">
             About
           </a>
@@ -19,6 +21,7 @@ export function TopNav() {
           <a href="#/contact" className="text-[#D7E2EA] font-medium uppercase tracking-wider text-xs sm:text-sm hover:opacity-70 transition-opacity duration-200">
             Contact
           </a>
+          <SoundToggle />
         </nav>
       </div>
     </header>
