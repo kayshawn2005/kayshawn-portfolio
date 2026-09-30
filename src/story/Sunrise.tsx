@@ -59,8 +59,8 @@ function Contact() {
       .catch(() => {})
   }
   return (
-    <article className="panel contact" id="contact">
-      <h3 className="contact-title">Let&apos;s make something.</h3>
+    <article className="letter" id="contact">
+      <h3 className="letter-title">Let&apos;s make something.</h3>
       <dl className="contact-list">
         <div>
           <dt>Email</dt>
@@ -94,6 +94,7 @@ function Contact() {
         Write to me
         <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
       </a>
+      <p className="letter-sign">Kayshawn</p>
     </article>
   )
 }
@@ -110,7 +111,7 @@ export function Sunrise() {
       <div className="chapter-body">
         <RoseCastle />
         <Contact />
-        <div className="panel credits">
+        <div className="credits">
           <p className="credits-title">Kayshawn Yen</p>
           <dl>
             {CREDITS.map(([role, who]) => (

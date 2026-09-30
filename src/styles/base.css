@@ -1,6 +1,8 @@
 /*
- * Kayshawn Yen, "In the Pool" (v2). One night, so one dark theme on purpose: the sets are the colour.
- * Shapes: buttons and chips are pills, panels are 16px, photographs 6px. One accent: the pool light.
+ * Kayshawn Yen, "In the Pool" (v2). One evening and night, so one dark theme on purpose: the painted sets are the
+ * colour. Text sits on the sets like an animated film: subtitles, a Mincho title card, and things that belong in the
+ * scene (a paper menu, a chalkboard, a letter) instead of dark boxes.
+ * Shapes: buttons and chips are pills, paper is 4px, photographs 6px. One accent: the pool light.
  */
 :root {
   color-scheme: dark;
@@ -9,18 +11,24 @@
   --mute: rgba(238, 235, 229, 0.7);
   --faint: rgba(238, 235, 229, 0.5);
   --line: rgba(238, 235, 229, 0.14);
-  --panel: rgba(9, 11, 15, 0.64);
+  --glass: rgba(255, 255, 255, 0.12);
+  --glass-line: rgba(255, 255, 255, 0.26);
+  --sheet: #f4ecdd;
+  --sheet-ink: #33291f;
+  --sheet-mute: rgba(51, 41, 31, 0.68);
+  --menu-red: #93342f;
   --accent: #8fe3e6;
   --accent-ink: #06282b;
   --receipt: #f3f0e8;
   --receipt-ink: #26221d;
   --board: rgba(24, 42, 34, 0.84);
   --chalk: #e8eee5;
-  --sans: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --display: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+  --sans: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
   --hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
   --gutter: clamp(16px, 4vw, 56px);
-  --r-panel: 16px;
+  --r-panel: 4px;
   --r-photo: 6px;
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
@@ -31,7 +39,7 @@ body {
   margin: 0;
   background: var(--ink);
   color: var(--paper);
-  font: 400 16px/1.6 var(--sans);
+  font: 400 17px/1.7 var(--sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -55,9 +63,9 @@ p { margin: 0; }
   padding: env(safe-area-inset-top, 0px) var(--gutter) 0;
   background: linear-gradient(to bottom, rgba(5, 6, 8, 0.72), rgba(5, 6, 8, 0));
 }
-.brand { font-weight: 600; letter-spacing: 0.02em; text-decoration: none; white-space: nowrap; }
+.brand { font: 600 18px var(--display); letter-spacing: 0.04em; text-decoration: none; white-space: nowrap; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
 .site-nav { display: flex; gap: 18px; margin-left: auto; }
-.site-nav a { color: var(--mute); text-decoration: none; font-size: 14px; }
+.site-nav a { color: var(--mute); text-decoration: none; font-size: 15px; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); }
 .site-nav a[aria-current='page'], .site-nav a:hover { color: var(--paper); }
 .header-actions { display: flex; gap: 8px; }
 .chip {
@@ -66,11 +74,11 @@ p { margin: 0; }
   gap: 7px;
   height: 34px;
   padding: 0 13px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-line);
   border-radius: 999px;
-  background: rgba(9, 11, 15, 0.45);
+  background: var(--glass);
   backdrop-filter: blur(10px);
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 .chip[aria-pressed='true'] { border-color: rgba(143, 227, 230, 0.5); color: var(--accent); }
@@ -89,9 +97,9 @@ p { margin: 0; }
   padding: 0 22px;
   border: 1px solid transparent;
   border-radius: 999px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -100,7 +108,7 @@ p { margin: 0; }
 .button:active { transform: translateY(1px) scale(0.99); }
 .button.is-solid { background: var(--paper); color: #111316; }
 .button.is-solid:hover { background: #fff; }
-.button.is-ghost { border-color: rgba(238, 235, 229, 0.4); background: rgba(9, 11, 15, 0.35); backdrop-filter: blur(8px); }
+.button.is-ghost { border-color: rgba(255, 255, 255, 0.5); background: var(--glass); backdrop-filter: blur(8px); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); }
 .button.is-ghost:hover { border-color: var(--paper); }
 .button.is-quiet { min-height: 40px; padding: 0 14px; background: none; color: var(--mute); font-weight: 500; }
 .button.is-quiet:hover { color: var(--paper); }
@@ -109,9 +117,9 @@ p { margin: 0; }
   place-items: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-line);
   border-radius: 999px;
-  background: rgba(9, 11, 15, 0.5);
+  background: var(--glass);
   cursor: pointer;
 }
 .badge {

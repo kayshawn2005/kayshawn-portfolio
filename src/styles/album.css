@@ -2,7 +2,7 @@
    photo grows in proportion to its aspect ratio so every row ends flush and nothing is cropped. */
 .album { min-height: 100vh; padding: 120px var(--gutter) 60px; background: linear-gradient(to bottom, #0c1216, var(--ink) 40%); }
 .album-head { display: grid; gap: 14px; max-width: 1180px; margin: 0 auto 40px; }
-.album-title { font-size: clamp(2.6rem, 7vw, 5rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.035em; }
+.album-title { font: 600 clamp(2.8rem, 7vw, 5rem) / 1.05 var(--display); letter-spacing: 0.02em; }
 .album-sub { color: var(--mute); font-size: 1.05rem; }
 .album-index { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .album-index a { padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; color: var(--mute); font-size: 13px; text-decoration: none; }
@@ -10,7 +10,7 @@
 
 .album-series { max-width: 1180px; margin: 0 auto; padding-block: 56px; border-top: 1px solid var(--line); scroll-margin-top: 70px; }
 .album-series-head { display: grid; gap: 8px; margin-bottom: 26px; }
-.album-series-head h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); font-weight: 700; letter-spacing: -0.025em; }
+.album-series-head h2 { font: 600 clamp(1.9rem, 3.8vw, 2.8rem) / 1.15 var(--display); letter-spacing: 0.02em; }
 .album-series-head p { color: var(--mute); }
 .album-grid { display: flex; flex-wrap: wrap; gap: 14px; }
 .album-grid::after { content: ""; flex-grow: 1000; }

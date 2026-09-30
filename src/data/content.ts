@@ -13,7 +13,6 @@ export const SERVICES: Service[] = [
   { name: 'Cosplay & Character', note: 'concept to color grade', photo: P('fiori-3'), desc: 'Full creative direction for convention and character photography: concept, posing, lighting, and color grading built around the costume.' },
   { name: 'Bridal & Editorial', note: 'golden hour, coastline', photo: P('bride-1'), desc: 'Golden-hour bridal and fashion-editorial shoots, planned around location, wardrobe, and a consistent cinematic color story.' },
   { name: 'Graduation & Events', note: 'fast turnaround, careful framing', photo: P('purple-3'), desc: "Portraits and coverage for graduations, meetups, and small events, with a fast turnaround that doesn't cut corners on composition." },
-  { name: 'Automotive', note: 'reflections, motion', photo: null, desc: 'Detail and environmental shots for cars: controlled reflections, motion, and color grading suited to the subject.' },
 ]
 
 export interface Series {

@@ -135,7 +135,7 @@ export const PLATES = {
     focus: 0.45,
     frame: [[0.5, 0.5], [0.5, 0.5]],
     zoom: [1.05, 1.08],
-    fx: { water: 0.7, sparkle: 1, horizon: 0.35 },
+    fx: { water: 0.7, sparkle: 0.5, horizon: 0.35 },
     grade: [[0.78, -0.35, 0.85, 1.1], [1.02, 0.15, 1.05, 0.85]],
   },
 } satisfies Record<string, PlateLook>

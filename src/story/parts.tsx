@@ -3,16 +3,18 @@ import { ArrowDown } from '@phosphor-icons/react'
 import type { Chapter } from '../data/story'
 import { scrollToId, useSeen } from './hooks'
 
-/** A chapter's title card: the set is the picture, so this is only a title and one line of narration, like a subtitle. */
+/** A chapter's title card, as in a film: the title in the frame, the narration as a subtitle at the foot of it. */
 export function ChapterCard({ chapter, line }: { chapter: Chapter; line: string }) {
   const [ref, seen] = useSeen<HTMLDivElement>(0.5)
   return (
     <div ref={ref} className={`chapter-card ${seen ? 'is-seen' : ''}`}>
-      <p className="chapter-meta">
-        <span>{chapter.numeral}</span>
-        <span>{chapter.time}</span>
-      </p>
-      <h2 className="chapter-title">{chapter.title}</h2>
+      <div className="title-card">
+        <p className="chapter-meta">
+          <span>{chapter.numeral}</span>
+          <span>{chapter.time}</span>
+        </p>
+        <h2 className="chapter-title">{chapter.title}</h2>
+      </div>
       <p className="subtitle">{line}</p>
     </div>
   )

@@ -12,7 +12,7 @@ export function Classroom() {
     <section id="classroom" data-plate="classroom" className="chapter">
       <ChapterCard chapter={CHAPTERS[2]} line={LINES.classroom} />
       <div className="chapter-body">
-        <article className="panel chalkboard">
+        <article className="chalkboard">
           <h3 className="chalk-title">Today&apos;s lesson: how a shoot comes together</h3>
           <ol className="lesson">
             {LESSON.map(([step, text]) => (
@@ -23,18 +23,20 @@ export function Classroom() {
             ))}
           </ol>
         </article>
-        <article className="panel desks" id="series">
-          <h3 className="panel-title">Every desk holds a series</h3>
+        <article className="desks" id="series">
+          <h3 className="section-title on-set">Every desk holds a series</h3>
           <ul className="desk-grid">
             {SERIES.map((s) => (
               <li key={s.slug}>
                 <a className="desk" href={`#/album/${s.slug}`}>
-                  <Picture src={s.images[0]} alt={s.title} sizes="(min-width: 1100px) 300px, (min-width: 700px) 30vw, 45vw" className="desk-photo" />
-                  <span className="desk-title">
+                  <span className="desk-print">
+                    <Picture src={s.images[0]} alt={s.title} sizes="(min-width: 1100px) 320px, (min-width: 700px) 30vw, 45vw" className="desk-photo" />
+                  </span>
+                  <span className="desk-title on-set">
                     {s.title}
                     {s.isNew && <span className="badge">New</span>}
                   </span>
-                  <span className="desk-count">{s.images.length} photographs</span>
+                  <span className="desk-count on-set">{s.images.length} photographs</span>
                 </a>
               </li>
             ))}
