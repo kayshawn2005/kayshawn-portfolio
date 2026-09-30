@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type MouseEventHandler } from 'react'
 import { PHOTOS } from '../data/photos.gen'
 import { optimizedSrcSet, photoName } from '../lib/photos'
-import { prefersReducedMotion } from './FadeIn'
+import { prefersReducedMotion } from '../lib/motion'
 
 interface PictureProps {
   src: string

@@ -1,33 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
-import { ArrowUpRight } from 'lucide-react'
-import { ChapterHead } from './ChapterHead'
-import { AnimatedText } from '../components/AnimatedText'
-import { Magnet } from '../components/Magnet'
-import { Pic } from '../components/Lightbox'
+import { useState } from 'react'
 import { Picture } from '../components/Picture'
 import { KAYSHAWN_PORTRAIT } from '../data/content'
-import { MENU, NARRATION, RECEIPT } from '../data/story'
+import { CHAPTERS, LINES, MENU, RECEIPT } from '../data/story'
+import { ChapterCard, NextButton } from './parts'
+import { useSeen } from './hooks'
 
-/** A receipt that prints line by line the first time it scrolls into view. */
+/** The studio's numbers, printed like the café's receipt. */
 function Receipt() {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const [printed, setPrinted] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
-        setPrinted(true)
-        io.disconnect()
-      }
-    })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  const [ref, seen] = useSeen<HTMLDivElement>(0.4)
   return (
-    <div ref={ref} className={`receipt ${printed ? 'is-printed' : ''}`}>
-      <p className="receipt-shop">K Picture Studio</p>
-      <p className="receipt-meta">Table 01 · Order #0826 · 20:10</p>
+    <div ref={ref} className={`receipt ${seen ? 'is-printed' : ''}`}>
+      <p className="receipt-head">K Picture Studio</p>
+      <p className="receipt-sub">Table 01, 20:30</p>
       <dl>
         {RECEIPT.map(([k, v]) => (
           <div key={k}>
@@ -36,87 +20,61 @@ function Receipt() {
           </div>
         ))}
       </dl>
-      <p className="receipt-total">
-        <span>Total</span>
-        <span>One story</span>
-      </p>
-      <p className="receipt-thanks">thank you · come again</p>
-      <div className="receipt-barcode" aria-hidden="true" />
+      <p className="receipt-foot">Thank you. Come again.</p>
     </div>
   )
 }
 
-/** Chapter I: who I am, over coffee. Services are tonight's menu; each order slides out a ticket. */
-export function Cafe() {
-  const [ticket, setTicket] = useState<number | null>(null)
-  const item = ticket === null ? null : MENU[ticket]
-
+/** Services as tonight's menu. Picking a dish prints its order ticket: a photograph and what the session is. */
+function Menu() {
+  const [pick, setPick] = useState(0)
+  const item = MENU[pick]
   return (
-    <section id="cafe" className="chapter cafe">
-      <div className="cafe-lamp" aria-hidden="true" />
-      <div className="chapter-inner">
-        <ChapterHead id="cafe" tone="warm" />
-        <AnimatedText text={NARRATION.cafe} className="story-narration story-narration-lg" />
-
-        <div className="cafe-grid">
-          <figure className="cafe-polaroid">
-            <Magnet padding={120} strength={4}>
-              <div className="polaroid">
-                <span className="polaroid-pin" aria-hidden="true" />
-                <Pic src={KAYSHAWN_PORTRAIT} alt="Kayshawn Yen, photographer" sizes="320px" className="w-full" />
-                <figcaption>the usual table · K Picture Studio</figcaption>
-              </div>
-            </Magnet>
-          </figure>
-
-          <div className="cafe-text">
-            <p className="cafe-bio">{NARRATION.bio}</p>
-
-            <div className="menu-board" onMouseLeave={() => setTicket(null)}>
-              <p className="menu-eyebrow">K Picture Studio</p>
-              <h3 className="menu-title">Tonight&apos;s Menu</h3>
-              <ul>
-                {MENU.map((m, i) => (
-                  <li key={m.name}>
-                    <button
-                      type="button"
-                      className={`menu-row ${ticket === i ? 'is-open' : ''}`}
-                      aria-expanded={ticket === i}
-                      onMouseEnter={() => setTicket(i)}
-                      onFocus={() => setTicket(i)}
-                      onClick={() => setTicket((t) => (t === i ? null : i))}
-                    >
-                      <span className="menu-name">{m.name}</span>
-                      <span className="menu-dots" aria-hidden="true" />
-                      <span className="menu-note">{m.note}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <div className={`menu-ticket ${item ? 'is-out' : ''}`} aria-live="polite">
-                {item && (
-                  <>
-                    {item.photo ? (
-                      <Picture key={item.photo} src={item.photo} alt={item.name} sizes="240px" develop={false} className="menu-ticket-photo" />
-                    ) : (
-                      <p className="menu-ticket-empty">Photos on request</p>
-                    )}
-                    <p className="menu-ticket-caption">
-                      Order #{String((ticket ?? 0) + 1).padStart(2, '0')} · {item.name}
-                    </p>
-                    <p className="menu-ticket-desc">{item.desc}</p>
-                  </>
-                )}
-              </div>
-            </div>
-
-            <a href="#/about" className="story-link">
-              Read the full story <ArrowUpRight size={16} />
-            </a>
-          </div>
-
-          <Receipt />
+    <div className="menu">
+      <h3 className="panel-title">Tonight&apos;s menu</h3>
+      <div className="menu-grid">
+        <ul className="menu-list">
+          {MENU.map((m, i) => (
+            <li key={m.name}>
+              <button type="button" className="menu-row" aria-pressed={i === pick} onClick={() => setPick(i)} onMouseEnter={() => setPick(i)}>
+                <span className="menu-name">{m.name}</span>
+                <span className="menu-note">{m.note}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="ticket" key={item.name} aria-live="polite">
+          {item.photo ? (
+            <Picture src={item.photo} alt={item.name} sizes="(min-width: 900px) 220px, 60vw" develop={false} className="ticket-photo" />
+          ) : (
+            <div className="ticket-photo is-empty">Photographs coming soon</div>
+          )}
+          <p className="ticket-order">Order: {item.name}</p>
+          <p className="ticket-desc">{item.desc}</p>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/** Chapter I: the café. Who I am, and what I shoot. */
+export function Cafe() {
+  return (
+    <section id="cafe" data-plate="cafe" className="chapter">
+      <ChapterCard chapter={CHAPTERS[1]} line={LINES.cafe} />
+      <div className="chapter-body">
+        <article className="panel about" id="about">
+          <Picture src={KAYSHAWN_PORTRAIT} alt="Kayshawn Yen" sizes="(min-width: 900px) 260px, 70vw" className="about-photo" />
+          <div className="about-text">
+            <h3 className="panel-title">The usual table</h3>
+            <p>{LINES.bio}</p>
+            <Receipt />
+          </div>
+        </article>
+        <article className="panel">
+          <Menu />
+        </article>
+        <NextButton to="classroom">Walk to the school</NextButton>
       </div>
     </section>
   )

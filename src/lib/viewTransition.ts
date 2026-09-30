@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from '../components/FadeIn'
+import { prefersReducedMotion } from './motion'
 
 export type TransitionKind = 'page' | 'lightbox'
 

@@ -1,86 +1,51 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
-import { TopNav } from './components/TopNav'
-import { LightboxProvider } from './components/Lightbox'
-import { prefersReducedMotion } from './components/FadeIn'
+import { Header } from './components/Header'
+import { AlbumPage } from './album/AlbumPage'
+import { StoryPage } from './story/StoryPage'
 import { withViewTransition } from './lib/viewTransition'
-import { StoryPage } from './pages/Story'
-import { AboutPage } from './pages/About'
-import { GalleryPage, type World } from './pages/Gallery'
-import { ContactPage } from './pages/Contact'
 
-type Route =
-  | { view: 'home'; anchor: string | null }
-  | { view: 'gallery'; slug: string | null; world: World | null }
-  | { view: 'about' }
-  | { view: 'contact' }
+type Route = { page: 'story'; anchor: string | null } | { page: 'album'; slug: string | null }
 
-function parseHash(hash: string): Route {
-  if (hash.startsWith('#/gallery')) {
-    const m = hash.match(/^#\/gallery\/(.+)$/)
-    const part = m ? decodeURIComponent(m[1]) : null
-    if (part === 'country' || part === 'city') return { view: 'gallery', slug: null, world: part }
-    return { view: 'gallery', slug: part, world: null }
+function parse(hash: string): Route {
+  // #/album/<slug>; the old #/gallery links still work
+  const m = hash.match(/^#\/(album|gallery)(?:\/(.+))?$/)
+  if (m) {
+    const slug = m[2] ? decodeURIComponent(m[2]) : null
+    return { page: 'album', slug: slug === 'country' || slug === 'city' ? null : slug }
   }
-  if (hash === '#/about') return { view: 'about' }
-  if (hash === '#/contact') return { view: 'contact' }
-  return { view: 'home', anchor: hash.length > 1 && !hash.startsWith('#/') ? hash.slice(1) : null }
+  if (hash === '#/about') return { page: 'story', anchor: 'about' }
+  if (hash === '#/contact') return { page: 'story', anchor: 'contact' }
+  return { page: 'story', anchor: hash.length > 1 && !hash.startsWith('#/') ? hash.slice(1) : null }
 }
 
-const targetId = (route: Route) => (route.view === 'home' ? route.anchor : route.view === 'gallery' ? route.slug : null)
-const pageKey = (route: Route) => (route.view === 'gallery' ? `gallery:${route.world ?? 'all'}` : route.view)
-
-function scrollToRoute(route: Route, smooth: boolean) {
-  const id = targetId(route)
+function scrollToRoute(route: Route) {
+  const id = route.page === 'album' ? route.slug : route.anchor
   const el = id ? document.getElementById(id) : null
-  const behavior: ScrollBehavior = smooth && !prefersReducedMotion() ? 'smooth' : 'instant'
-  if (el) el.scrollIntoView({ behavior, block: 'start' })
-  else window.scrollTo({ top: 0, behavior })
+  if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' })
+  else window.scrollTo({ top: 0, behavior: 'instant' })
 }
 
-function App() {
-  const [hash, setHash] = useState(() => window.location.hash)
-  const pageRef = useRef(pageKey(parseHash(hash)))
+export default function App() {
+  const [route, setRoute] = useState(() => parse(window.location.hash))
 
   useEffect(() => {
-    const onHashChange = () => {
-      const next = window.location.hash
-      const route = parseHash(next)
-      if (pageKey(route) === pageRef.current) {
-        // Same page: glide to the section.
-        setHash(next)
-        requestAnimationFrame(() => scrollToRoute(route, true))
-        return
-      }
-      // New page: an aperture transition, with the new page already at its scroll target when it opens.
-      pageRef.current = pageKey(route)
+    const onHash = () => {
+      const next = parse(window.location.hash)
       withViewTransition('page', () => {
-        flushSync(() => setHash(next))
-        scrollToRoute(route, false)
+        flushSync(() => setRoute(next))
+        scrollToRoute(next)
       })
     }
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
+    window.addEventListener('hashchange', onHash)
+    requestAnimationFrame(() => scrollToRoute(parse(window.location.hash)))
+    return () => window.removeEventListener('hashchange', onHash)
   }, [])
-
-  // Deep link on first load (e.g. #/gallery/sparks-and-steel).
-  useEffect(() => {
-    const route = parseHash(window.location.hash)
-    if (targetId(route)) requestAnimationFrame(() => scrollToRoute(route, false))
-  }, [])
-
-  const route = parseHash(hash)
 
   return (
-    <LightboxProvider>
-      <TopNav />
-      {route.view === 'gallery' && <GalleryPage world={route.world} />}
-      {route.view === 'about' && <AboutPage />}
-      {route.view === 'contact' && <ContactPage />}
-      {route.view === 'home' && <StoryPage />}
-      <div className="grain" aria-hidden="true" />
-    </LightboxProvider>
+    <>
+      <Header page={route.page} />
+      {route.page === 'story' ? <StoryPage /> : <AlbumPage />}
+    </>
   )
 }
-
-export default App

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Original camera files dropped in by hand; web copies live in public/photos
+/IMG_*.JPG

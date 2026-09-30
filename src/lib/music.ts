@@ -1,15 +1,21 @@
 /**
- * Site soundtrack: "slow summer eve" — Kensuke Ushio.
+ * Site soundtrack: "in the pool" by Kensuke Ushio.
  * On by default: it starts the moment the browser allows sound (autoplay if permitted, otherwise the
- * entry screen's click), fades in over 2 s, remembers a visitor who mutes it, pauses in background
- * tabs, and exposes a beat clock the visuals sync to. Measured from the track: 130 BPM, first downbeat 0.608 s.
+ * phone booth's "pick up"), fades in over 2 s, remembers a visitor who mutes it, pauses in background
+ * tabs, and exposes a beat clock the visuals sync to. Measured from the track: 102.08 BPM, first downbeat 1.943 s.
  */
-export const BPM = 130
+export const BPM = 102.08
 export const BEAT = 60 / BPM
-export const DOWNBEAT = 0.608
-export const TRACK = { title: 'slow summer eve', artist: 'Kensuke Ushio' }
+export const DOWNBEAT = 1.943
+export const TRACK = { title: 'in the pool', artist: 'Kensuke Ushio' }
 
-const SRC = '/audio/slow-summer-eve.m4a'
+/**
+ * Where each chapter sits on the song (seconds), found from its loudness and brightness curve. 1:57 is the
+ * near-silent break before the loudest stretch, which is where the story dives into the pool.
+ */
+export const SECTIONS = { booth: 0, cafe: 18.4, classroom: 58.4, pool: 100.7, dive: 117.2, climax: 124.2, sunrise: 180, end: 247.3 } as const
+
+const SRC = '/audio/in-the-pool.m4a'
 const STORE_KEY = 'ky-sound'
 const VOLUME = 0.7
 
@@ -146,6 +152,11 @@ class MusicEngine {
   toggle() {
     if (this.on) this.disable()
     else void this.enable()
+  }
+
+  /** Jump to a point in the song (used when "follow the music" starts from where the visitor already is). */
+  seek(seconds: number) {
+    if (this.el) this.el.currentTime = Math.max(0, seconds)
   }
 
   /** True while the track is audibly playing (the visual clock follows it). */

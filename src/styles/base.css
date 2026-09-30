@@ -1,0 +1,135 @@
+/*
+ * Kayshawn Yen, "In the Pool" (v2). One night, so one dark theme on purpose: the sets are the colour.
+ * Shapes: buttons and chips are pills, panels are 16px, photographs 6px. One accent: the pool light.
+ */
+:root {
+  color-scheme: dark;
+  --ink: #0b0d10;
+  --paper: #eeebe5;
+  --mute: rgba(238, 235, 229, 0.7);
+  --faint: rgba(238, 235, 229, 0.5);
+  --line: rgba(238, 235, 229, 0.14);
+  --panel: rgba(9, 11, 15, 0.64);
+  --accent: #8fe3e6;
+  --accent-ink: #06282b;
+  --receipt: #f3f0e8;
+  --receipt-ink: #26221d;
+  --board: rgba(24, 42, 34, 0.84);
+  --chalk: #e8eee5;
+  --sans: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --gutter: clamp(16px, 4vw, 56px);
+  --r-panel: 16px;
+  --r-photo: 6px;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 16px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.selectable { user-select: all; }
+
+/* ── header ── */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 64px;
+  padding: env(safe-area-inset-top, 0px) var(--gutter) 0;
+  background: linear-gradient(to bottom, rgba(5, 6, 8, 0.72), rgba(5, 6, 8, 0));
+}
+.brand { font-weight: 600; letter-spacing: 0.02em; text-decoration: none; white-space: nowrap; }
+.site-nav { display: flex; gap: 18px; margin-left: auto; }
+.site-nav a { color: var(--mute); text-decoration: none; font-size: 14px; }
+.site-nav a[aria-current='page'], .site-nav a:hover { color: var(--paper); }
+.header-actions { display: flex; gap: 8px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(9, 11, 15, 0.45);
+  backdrop-filter: blur(10px);
+  font-size: 13px;
+  cursor: pointer;
+}
+.chip[aria-pressed='true'] { border-color: rgba(143, 227, 230, 0.5); color: var(--accent); }
+@media (max-width: 640px) {
+  .chip-label { display: none; }
+  .chip { width: 34px; padding: 0; justify-content: center; }
+  .site-nav { gap: 14px; }
+}
+
+/* ── buttons ── */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.2s, border-color 0.2s;
+}
+.button:active { transform: translateY(1px) scale(0.99); }
+.button.is-solid { background: var(--paper); color: #111316; }
+.button.is-solid:hover { background: #fff; }
+.button.is-ghost { border-color: rgba(238, 235, 229, 0.4); background: rgba(9, 11, 15, 0.35); backdrop-filter: blur(8px); }
+.button.is-ghost:hover { border-color: var(--paper); }
+.button.is-quiet { min-height: 40px; padding: 0 14px; background: none; color: var(--mute); font-weight: 500; }
+.button.is-quiet:hover { color: var(--paper); }
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(9, 11, 15, 0.5);
+  cursor: pointer;
+}
+.badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+/* ── page transitions ── */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

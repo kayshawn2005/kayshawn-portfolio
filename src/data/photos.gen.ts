@@ -201,6 +201,44 @@ export const PHOTOS: Record<string, PhotoMeta> = {
     ],
     "lqip": "data:image/webp;base64,UklGRhYBAABXRUJQVlA4IAoBAADQBgCdASoUACQAPu1oqVAppiOiqqoBMB2JQBiBJAh8szraHfcaR3xMPPmGN/kODfOycxu6O/eghaOdu/sCh0AA3mX0SLnBoCO076Hab7l3cL+4JeJix1pEoz5e6UlYM5DIAf1AGBGIANLK8m2GNUcNWR7utoc9awokf1eVlgsV6Ik68+lnSvtSXDKPa1fcgSn9ujfOLycpftSMB7nbEQ7d9TMCSci3/CphP9HYSwUPAunWKqaH9Wv0ndBoHhwULmQgvmPjtBR1iNZ06G0L9jzdtWSZp3XKHax2ja18+wkTNu7mFGf6QM/O1NkemQpioKtYtHQhDQacBCylzDsst3f7iYpg5/zUsAAAAA=="
   },
+  "rose-1": {
+    "w": 2400,
+    "h": 1350,
+    "widths": [
+      800,
+      1400,
+      2000
+    ],
+    "lqip": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADQAwCdASoUAAwAPu1iqU2ppaOiMAgBMB2JZAC7AYvqxTsfmLC/RDQA/NCRsDIawUxpfnMnPSA0qfpfIA7Ixmznty+MCn5Gaf7C3IXMjvdpNMZCXpOUSDGrSaRedhLMegeYJKKN8HKfSS9T4O9F6UUTjvGP+QaAAAA="
+  },
+  "rose-2": {
+    "w": 1350,
+    "h": 2400,
+    "widths": [
+      800,
+      1350
+    ],
+    "lqip": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAADwBgCdASoUACQAPu1yrlGppyQiqrgIATAdiUAWo25A9NsFDsqj8ns/PKH/2WbxZuX2X2pUDv9zabD2zibY5JMAAP7W8ToePzrL1Ki6pH5RD0Womkt5L8t85cxsvgPFajkRjwifAq5TmuB8+gczVkF7kMlwv+g9JcJEYavo6DJvcov4q4eBGimz0ML0uimb+XZYBzx+4TrRUIpSqqbWiaVXre1YtMsE+j5TwTXtKuJbjLQr+LHA3sQqgGVRNWTjUqF3ijGDj0WKt99lVaIbn4cmsRDuRtmUiBcOTZR2Mx0+cti9b4rOUoU0kEaUketgAAA="
+  },
+  "rose-3": {
+    "w": 2400,
+    "h": 1350,
+    "widths": [
+      800,
+      1400,
+      2000
+    ],
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAACwAwCdASoUAAwAPu1iqU2ppaQiMAgBMB2JQBWAA4lq6bMqUlEUAAD+6qlK30XYg9jqJ3LZV1a5UJB9Xf3hvbYrPX2IH9mFfeaNdeJmZO/u9YCh/0zJ1D5WVXz6V6gHqPLPVhGtBcEAAA=="
+  },
+  "rose-4": {
+    "w": 1350,
+    "h": 2400,
+    "widths": [
+      800,
+      1350
+    ],
+    "lqip": "data:image/webp;base64,UklGRugAAABXRUJQVlA4INwAAACwBgCdASoUACQAPu1urlCppqQiqqgBMB2JYwCxH8GEXB8UJ+4Qhmyr+1W+sjJED8iIf19qdPXR4+CAX567MADMdZisBgZolIGj4Om083RxN8qmkB1l4a9CJqVPNV/z2UIGd9zs3FfUJIRtXvg5b/XRVYqFitnCzH63vNmgmd2qZJnM6vHek1keNOxnU9YY6YDj2YG3pBNSwFmQaquuvnqYzeLEB5Yt6yeBsARyi7JcPYvqPexY/B2D6tzZYmIB4KRD9oH7KgPaqN0Av5IVOhpp0Pkiba2LfWStBwAA"
+  },
   "sparks-1": {
     "w": 1013,
     "h": 1800,
