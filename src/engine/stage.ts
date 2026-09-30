@@ -214,7 +214,9 @@ vec3 shade(sampler2D C, sampler2D D, vec4 cam, vec4 view, vec4 fx, vec4 fx2, vec
   // glints on the sea
   if (fx2.y > 0. && wet > 0.) {
     vec2 g = uv * vec2(260., 900.);
-    float glint = step(.994, hash12(floor(g) + floor(t * 5.))) * smoothstep(.45, .85, l);
+    // the sea only glints where the sun lights it; the pool glitters all over its dark water
+    float gate = fx2.z > 0. ? smoothstep(.45, .85, l) : smoothstep(.58, .78, fbm(uv * 5. + t * .04)); // pool: in drifting clusters
+    float glint = step(.994, hash12(floor(g) + floor(t * 5.))) * gate;
     col += glint * fx2.y * vec3(1., .9, .75) * 1.6;
   }
   // underwater: caustics, shafts of light from above, bubbles, and the water's colour
@@ -223,7 +225,7 @@ vec3 shade(sampler2D C, sampler2D D, vec4 cam, vec4 view, vec4 fx, vec4 fx2, vec
     float shafts = fbm(vec2(s.x * 6. + s.y * 1.5, t * .15)) * smoothstep(0., 1., p.y);
     float b = bubbles(s + cam.xy * 6., t, 18.) + bubbles(s * 1.7 + cam.xy * 10. + 4., t * 1.2, 26.) * .6;
     col = mix(col, col * vec3(.72, 1., 1.06), .35 * fx.w);
-    col += vec3(.45, .85, .95) * (c * .06 + shafts * .1 + b * .22) * fx.w;
+    col += vec3(.45, .85, .95) * (c * .025 + shafts * .1 + b * .08) * fx.w;
   }
 
   // grade: exposure, warmth, saturation, vignette

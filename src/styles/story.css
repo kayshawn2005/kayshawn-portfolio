@@ -60,7 +60,18 @@
   min-height: 100svh;
   padding: 120px var(--gutter) 16svh;
 }
-.chapter-card > * { opacity: 0; transform: translateY(14px); transition: opacity 1.1s cubic-bezier(0.2, 0.7, 0.2, 1), transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+/* a soft shade behind the title so it reads over bright sets (the café in the sun) */
+.chapter-card::before {
+  content: "";
+  position: absolute;
+  inset: auto auto 0 0;
+  width: min(900px, 100%);
+  height: 70%;
+  background: radial-gradient(80% 75% at 10% 90%, rgba(5, 6, 10, 0.72), transparent 72%);
+  pointer-events: none;
+}
+.chapter-card { position: relative; }
+.chapter-card > * { position: relative; opacity: 0; transform: translateY(14px); transition: opacity 1.1s cubic-bezier(0.2, 0.7, 0.2, 1), transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .chapter-card.is-seen > * { opacity: 1; transform: none; }
 .chapter-card.is-seen > :nth-child(2) { transition-delay: 0.15s; }
 .chapter-card.is-seen > :nth-child(3) { transition-delay: 0.45s; }

@@ -75,16 +75,21 @@ float sdBox(vec2 p, vec2 b, float r) { vec2 q = abs(p) - b + r; return length(ma
 
 vec3 water(vec2 p, float t) {
   vec2 u = p / uRes.y;
-  vec3 col = mix(vec3(.04, .46, .52), vec3(.01, .12, .17), smoothstep(-.1, 1.1, u.y));
+  vec3 col = mix(vec3(.05, .22, .42), vec3(.01, .05, .15), smoothstep(-.1, 1.1, u.y));   // deep blue night water
   float tile = 48. * uDpr;
   vec2 g = abs(fract(p / tile) - .5) * tile;
   col *= 1. - (1. - smoothstep(0., 1.4 * uDpr, min(g.x, g.y))) * .12;
   float laneW = uRes.y * .26;
   float ly = abs(fract(p.y / laneW - .5) - .5) * laneW;
-  col = mix(col, vec3(.02, .1, .22), (1. - smoothstep(4. * uDpr, 6. * uDpr, ly)) * .6);
+  col = mix(col, vec3(.01, .04, .14), (1. - smoothstep(4. * uDpr, 6. * uDpr, ly)) * .6);
   float c = cells(u * 5.5 + vec2(t * .04, 0.), t * .7) * .55 + cells(u * 10.5 - vec2(0., t * .03) + 3.1, t * .9) * .45;
   float patchy = .45 + .55 * (.5 + .5 * sin(u.x * 3.1 + t * .3) * sin(u.y * 2.3 - t * .25)); // light pools unevenly
-  return col + vec3(.5, .9, 1.) * c * .2 * patchy;
+  col += vec3(.55, .8, 1.) * c * .14 * patchy;
+  // light glittering on the surface, in drifting clusters
+  vec2 gq = floor(p / (5. * uDpr));
+  float cluster = smoothstep(.6, .8, sin(u.x * 4.1 + t * .2) * sin(u.y * 3.3 - t * .15) * .5 + .5);
+  float glint = step(.992, fract(sin(dot(gq + floor(t * 4.), vec2(12.9898, 78.233))) * 43758.5453));
+  return col + vec3(.9, .96, 1.) * glint * cluster * .9;
 }
 
 void main() {

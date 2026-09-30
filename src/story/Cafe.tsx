@@ -11,7 +11,7 @@ function Receipt() {
   return (
     <div ref={ref} className={`receipt ${seen ? 'is-printed' : ''}`}>
       <p className="receipt-head">K Picture Studio</p>
-      <p className="receipt-sub">Table 01, 20:30</p>
+      <p className="receipt-sub">Table 01, 18:20</p>
       <dl>
         {RECEIPT.map(([k, v]) => (
           <div key={k}>
