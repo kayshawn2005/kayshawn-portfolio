@@ -81,30 +81,33 @@ export const CREDITS: [string, string][] = [
 export const PLATES = {
   booth: {
     file: 'booth',
-    cam: [[0.014, 0, 0], [-0.008, 0.004, 0.14]],
-    focus: 0.55,
-    frame: [[0.64, 0.5], [0.66, 0.5]],
-    zoom: [1.05, 1.1],
-    fx: { rain: 0.9, drops: 1, flicker: 1 },
+    // the camera ends pushed in on the green phone: that is where "pick up" takes you
+    cam: [[0.012, 0, 0], [0, 0.004, 0.18]],
+    focus: 0.6,
+    frame: [[0.5, 0.5], [0.53, 0.47]],
+    zoom: [1.04, 1.4],
+    fx: { rain: 0.7, drops: 1, flicker: 1 },
     grade: [[0.96, -0.35, 0.9, 1.1], [0.96, -0.35, 0.9, 1.1]],
   },
   cafe: {
     file: 'cafe',
+    // phones start at the window table with the daisies and pan to the counter
     cam: [[-0.012, 0, 0], [0.012, 0.002, 0.08]],
     focus: 0.5,
-    frame: [[0.38, 0.5], [0.58, 0.5]],
+    frame: [[0.22, 0.45], [0.55, 0.5]],
     zoom: [1.05, 1.08],
     fx: { dust: 0.45 },
     grade: [[1, 0.3, 0.95, 0.95], [1, 0.3, 0.95, 0.95]],
   },
   classroom: {
     file: 'classroom',
+    // phones start on the moon in the window and pan to the blank chalkboard; graded to an anime night: dark, deep blue
     cam: [[0.016, 0, 0], [-0.012, 0.003, 0.1]],
     focus: 0.5,
-    frame: [[0.42, 0.5], [0.62, 0.5]],
+    frame: [[0.2, 0.62], [0.62, 0.6]],
     zoom: [1.05, 1.1],
-    fx: { dust: 1 },
-    grade: [[0.95, -0.35, 0.85, 1], [0.95, -0.35, 0.85, 1]],
+    fx: { dust: 0.7 },
+    grade: [[0.85, -1, 1.1, 1.2], [0.85, -1, 1.1, 1.2]],
   },
   pool: {
     file: 'pool',

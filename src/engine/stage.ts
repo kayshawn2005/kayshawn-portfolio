@@ -229,6 +229,12 @@ vec3 shade(sampler2D C, sampler2D D, vec4 cam, vec4 view, vec4 fx, vec4 fx2, vec
   // grade: exposure, warmth, saturation, vignette
   col *= gr.x;
   col *= vec3(1. + gr.y * .1, 1. + gr.y * .015, 1. - gr.y * .12);
+  // past -0.6 warmth becomes an anime night: shadows sink to deep blue, the light turns cold and pale
+  if (gr.y < -.6) {
+    float L = luma(col);
+    vec3 night = vec3(.02, .05, .14) + vec3(.55, .78, 1.05) * pow(L, 1.15) * 1.25;
+    col = mix(col, night, clamp((-gr.y - .6) / .4, 0., 1.) * .82);
+  }
   col = mix(vec3(luma(col)), col, gr.z);
   vec2 v = p - .5;
   col *= 1. - dot(v, v) * gr.w;
