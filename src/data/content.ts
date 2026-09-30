@@ -12,6 +12,8 @@ export const MARQUEE_ROW1 = [
   P('lolita-3'),
   P('persaes-1'),
   P('persaes-2'),
+  P('rose-1'),
+  P('rose-2'),
 ]
 
 export const MARQUEE_ROW2 = [
@@ -27,6 +29,8 @@ export const MARQUEE_ROW2 = [
   P('sparks-3'),
   P('purple-2'),
   P('purple-3'),
+  P('rose-3'),
+  P('rose-4'),
 ]
 
 export interface Service {
@@ -52,6 +56,12 @@ export interface Theme {
 
 /** Full body of work, grouped by mood/theme rather than subject name. */
 export const THEMES: Theme[] = [
+  {
+    slug: 'rose-castle',
+    title: 'Rose Castle',
+    mood: 'A princess among pink roses, falling petals and castle light.',
+    images: [P('rose-1'), P('rose-2'), P('rose-3'), P('rose-4')],
+  },
   {
     slug: 'golden-hour-devotion',
     title: 'Golden Hour Devotion',
